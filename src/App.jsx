@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
@@ -7,11 +7,11 @@ const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/~`;
 
 function App() {
 
-  const [name, setName] = useState('')
+  const nameRef = useRef()
+  const experienceRef = useRef()
+  const specRef = useRef()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [experience, setExperience] = useState(0)
-  const [spec, setSpec] = useState('')
   const [description, setDescription] = useState('')
 
   const isUsernameValid = useMemo(() => {
@@ -40,15 +40,15 @@ function App() {
 
     e.preventDefault()
 
-    if (!name.length > 0 || !isUsernameValid || !isPwdValid || !isDescriptionValid || !experience > 0 || !spec) {
+    if (!nameRef || !isUsernameValid || !isPwdValid || !isDescriptionValid || !experienceRef || !specRef) {
       alert('Errore! Compilare tutti i campi correttamente')
     }
 
     console.log(`
-        Nome : ${name}
+        Nome : ${nameRef.current.value}
         Username : ${username}
-        Anni di Esperienza: ${experience}
-        Specializzazione ${spec}
+        Anni di Esperienza: ${experienceRef.current.value}
+        Specializzazione ${specRef.current.value}
         Descrizione: ${description}
         `);
   }
@@ -66,8 +66,7 @@ function App() {
               type="text"
               className="form-control"
               placeholder="inserisci il tuo nome completo"
-              value={name}
-              onChange={(e) => setName(e.target.value)} />
+              ref={nameRef} />
           </div>
 
           {/* username */}
@@ -110,24 +109,19 @@ function App() {
               className="form-select"
               name="specializzazione"
               id="specializzazilne"
-              value={spec}
-              onChange={(e) => setSpec(e.target.value)}>
-              <option value="" disabled>Seleziona Specialistica</option>
+              ref={specRef}>
+
+              <option value="">Seleziona Specialistica</option>
               <option value="fullstack">Full Stack</option>
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
             </select>
-            {!spec &&
-              <p className="text-danger mt-1">Selezionare un'opzione</p>
-            }
           </div>
 
           {/* Esperienza */}
           <div className="mb-3 d-flex gap-2">
             <label htmlFor="esperienza" className="form-label col-7">Anni di Esperienza</label>
-            <input type="number" min={0} className="form-control col"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)} />
+            <input type="number" ref={experienceRef} min={0} className="form-control col" />
           </div>
 
           {/* Descrizione */}
@@ -156,5 +150,3 @@ function App() {
 }
 
 export default App
-
-
