@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
@@ -6,14 +6,22 @@ const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/~`;
 
 
 function App() {
-
+  // uncontrolled input
   const nameRef = useRef()
   const experienceRef = useRef()
   const specRef = useRef()
+
+  // controlled input
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [description, setDescription] = useState('')
 
+  // Focus on name input
+  useEffect(() => {
+    nameRef.current.focus();
+  }, []);
+
+  // Username Validation
   const isUsernameValid = useMemo(() => {
     const charsValid = username.split('').every(char =>
       letters.includes(char.toLowerCase()) || numbers.includes(char)
@@ -22,6 +30,8 @@ function App() {
 
   }, [username])
 
+
+  // Password Validation
   const isPwdValid = useMemo(() => {
     return (
       password.trim().length >= 8 &&
@@ -31,19 +41,20 @@ function App() {
     )
   }, [password])
 
+  // Description validation
   const isDescriptionValid = useMemo(() => {
     return description.trim().length >= 100 && description.trim().length <= 1000
   }, [description])
 
 
-  const validateForm = (e) => {
+  // Form handler
+  const handleSubmit = (e) => {
 
     e.preventDefault()
 
     if (!nameRef || !isUsernameValid || !isPwdValid || !isDescriptionValid || !experienceRef || !specRef) {
       alert('Errore! Compilare tutti i campi correttamente')
     }
-
     console.log(`
         Nome : ${nameRef.current.value}
         Username : ${username}
@@ -53,13 +64,13 @@ function App() {
         `);
   }
 
-
+  // Form markup
   return (
     <>
       <div className="container mt-5">
         <h1 className="text-center mb-4">Sign Up</h1>
 
-        <form className="col-md-6 mx-auto" onSubmit={validateForm}>
+        <form className="col-md-6 mx-auto" onSubmit={handleSubmit}>
           {/* name */}
           <div className="mb-3">
             <input
