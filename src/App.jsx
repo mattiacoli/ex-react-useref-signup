@@ -10,6 +10,7 @@ function App() {
   const nameRef = useRef()
   const experienceRef = useRef()
   const specRef = useRef()
+  const formRef = useRef()
 
   // controlled input
   const [username, setUsername] = useState('')
@@ -76,11 +77,16 @@ function App() {
 
   }
 
+  // handeler scroll view
+  const scrollToForm = () => {
+    formRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   // Form markup
   return (
     <>
-      <div className="container mt-5">
-        <h1 className="text-center mb-4">Sign Up</h1>
+      <div className="container mt-5"  >
+        <h1 className="text-center mb-4" ref={formRef}>Sign Up</h1>
 
         <form className="col-md-6 mx-auto" onSubmit={handleSubmit}>
           {/* name */}
@@ -172,8 +178,18 @@ function App() {
               onClick={resetData}
             >Reset</button>
           </div>
-
         </form>
+
+        <section style={{ backgroundColor: "blue", height: "100vh", marginTop: "1rem" }}>
+        </section>
+
+        <div className="scroll-top" onClick={scrollToForm}>
+          <i className="bi bi-arrow-up-circle"
+            style={{
+              color: 'red',
+              fontSize: '3rem'
+            }} />
+        </div>
       </div>
     </>
   )

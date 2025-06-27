@@ -1,7 +1,20 @@
 @import 'bootstrap';
+@import 'bootstrap-icons';
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.scroll-top {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: .5rem;
+  background-color: rgba(255, 255, 255, 0.768);
+  z-index: 1000;
 }
