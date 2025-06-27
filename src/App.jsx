@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+const letters = "abcdefghijklmnopqrstuvwxyz";
+const numbers = "0123456789";
+const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/~`;
+
 
 function App() {
 
@@ -9,10 +14,35 @@ function App() {
   const [spec, setSpec] = useState('')
   const [description, setDescription] = useState('')
 
+  const isUsernameValid = useMemo(() => {
+    const charsValid = username.split('').every(char =>
+      letters.includes(char.toLowerCase()) || numbers.includes(char)
+    )
+    return charsValid && username.trim().length >= 6
+
+  }, [username])
+
+  const isPwdValid = useMemo(() => {
+    return (
+      password.trim().length >= 8 &&
+      password.split('').some(char => letters.includes(char)) &&
+      password.split('').some(char => numbers.includes(char)) &&
+      password.split('').some(char => symbols.includes(char))
+    )
+  }, [password])
+
+  const isDescriptionValid = useMemo(() => {
+    return description.trim().length >= 100 && description.trim().length <= 1000
+  }, [description])
 
 
   const validateForm = (e) => {
+
     e.preventDefault()
+
+    if (!name.length > 0 || !isUsernameValid || !isPwdValid || !isDescriptionValid || !experience > 0 || !spec) {
+      alert('Errore! Compilare tutti i campi correttamente')
+    }
 
     console.log(`
         Nome : ${name}
@@ -48,6 +78,13 @@ function App() {
               placeholder="inserisci il tuo username"
               value={username}
               onChange={(e) => setUsername(e.target.value)} />
+
+            {username.trim() &&
+              <strong style={{ color: isUsernameValid ? 'green' : 'red' }}>
+                {isUsernameValid ? 'Username valido' : 'Deve avere almeno 6 caratteri alfanumerici'}
+              </strong>
+            }
+
           </div>
 
           {/* password */}
@@ -57,7 +94,14 @@ function App() {
               className="form-control"
               placeholder="Crea password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} />
+              onChange={(e) =>
+                setPassword(e.target.value)} />
+
+            {password.trim() &&
+              <strong style={{ color: isPwdValid ? 'green' : 'red' }}>
+                {isPwdValid ? 'Password valida' : 'La password deve contenere almeno 8 caratteri, 1 lettera, 1 numero e 1 simbolo'}
+              </strong>
+            }
           </div>
 
           {/* Specializzazione */}
@@ -73,6 +117,9 @@ function App() {
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
             </select>
+            {!spec &&
+              <p className="text-danger mt-1">Selezionare un'opzione</p>
+            }
           </div>
 
           {/* Esperienza */}
@@ -92,9 +139,16 @@ function App() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}>
             </textarea>
+
+            {description.trim() &&
+              <strong style={{ color: isDescriptionValid ? 'green' : 'red' }}>
+                {isDescriptionValid ? 'Descrizione valida' :
+                  `Deve contenere tra 100 e 1000 caratteri (${description.trim().length})`}
+              </strong>
+            }
           </div>
 
-          <button type="submit" className="btn btn-primary">Invia</button>
+          <button type="submit" className="btn btn-primary">Sign Up</button>
         </form>
       </div>
     </>
@@ -102,3 +156,5 @@ function App() {
 }
 
 export default App
+
+
