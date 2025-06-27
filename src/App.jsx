@@ -64,6 +64,18 @@ function App() {
         `);
   }
 
+  // Form reset
+  const resetData = () => {
+    nameRef.current.value = ""
+    experienceRef.current.value = ""
+    specRef.current.value = ""
+
+    setUsername('')
+    setPassword('')
+    setDescription('')
+
+  }
+
   // Form markup
   return (
     <>
@@ -152,8 +164,15 @@ function App() {
               </strong>
             }
           </div>
+          <div className="buttons d-flex justify-content-between">
+            <button type="submit" className="btn btn-primary">Sign Up</button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={resetData}
+            >Reset</button>
+          </div>
 
-          <button type="submit" className="btn btn-primary">Sign Up</button>
         </form>
       </div>
     </>
