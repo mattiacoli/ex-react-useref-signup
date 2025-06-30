@@ -186,7 +186,7 @@ function App() {
         <div className="scroll-top" onClick={scrollToForm}>
           <i className="bi bi-arrow-up-circle"
             style={{
-              color: 'red',
+              color: 'black',
               fontSize: '3rem'
             }} />
         </div>
